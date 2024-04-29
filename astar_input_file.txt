@@ -1,0 +1,3 @@
+Delivery algorithm:A*
+Start location:(8,5)
+Delivery locations:(21,23), (17,34)
