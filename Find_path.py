@@ -1,3 +1,9 @@
+//*** Sarah Groark
+//*** Artificial Intelligence
+//*** 05/07/2024
+//*** Final Project - Maze Path Finder
+
+
 from queue import PriorityQueue
 import tkinter as tk
 import time
