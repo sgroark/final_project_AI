@@ -61,6 +61,8 @@ class MazeGame:
             15: 'green2'
         }
 
+        # assigns priority values to each ward 
+
         self.priorities = {
             "ICU": 1, "Emergency": 1, "Oncology": 1, "Burn Ward": 1,
             "Surgical Ward": 2, "Maternity Ward": 2,
@@ -68,6 +70,8 @@ class MazeGame:
             "Medical Ward": 4, "General Ward": 4,
             "Admission": 5, "Isolation Ward": 5  # Corrected spelling
         }
+        
+        # initializes data structure to indicate priorities 
         self.priorities_all = {
                                 1: [],
                                 2: [],
@@ -81,7 +85,6 @@ class MazeGame:
 
         self.cells = [[Cell(x, y, maze[x][y] == 14) for y in range(self.cols)] for x in range(self.rows)]
 
-        # Initialize the agent position
 
         #### Start state's initial values for f(n) = g(n) + h(n)
         self.cells[self.agent_pos[0]][self.agent_pos[1]].g = 0
@@ -93,7 +96,8 @@ class MazeGame:
         self.canvas.pack()
 
         self.draw_maze()
-
+        
+        ## determines which algorithm to run based on input 
         if self.algorithms[0] == "A*":
             print(self.delivery_locations)
             local_delivery_locations = []
@@ -124,7 +128,7 @@ class MazeGame:
         else:
             print("Ineligible algorithm type. Please specify whether to use A* or Dijsktra's search algorithm.")
 
-
+## sorts the input list based on ward priority 
     def search_and_sort(self, input_list):
         result = []
         locations = []
@@ -143,6 +147,7 @@ class MazeGame:
 
 
     def draw_maze(self):
+        ## provides a color assignment to each ward 
         color_map = {
             0: 'white',
             1: 'grey',
@@ -160,7 +165,8 @@ class MazeGame:
             14: 'black',
             15: 'green2'
         }
-
+        
+## assigns ward name to cell based on color 
         for x in range(self.rows):
             for y in range(self.cols):
                 color = color_map[self.maze[x][y]]
@@ -235,10 +241,13 @@ class MazeGame:
                 self.canvas.create_rectangle(y * self.cell_size, x * self.cell_size, (y + 1) * self.cell_size,
                                              (x + 1) * self.cell_size, fill=color)
 
-
+## Defines the Manhattan Distance for the heuristic
     def heuristic(self, pos):
         return (abs(pos[0] - self.goal_pos[0]) + abs(pos[1] - self.goal_pos[1]))
 
+
+
+## DIJKSTRAS ALGORITHM
     def run_dij(self, start, end):
 
         open_set = PriorityQueue()
@@ -281,12 +290,7 @@ class MazeGame:
 
                         #### Add the new cell to the priority queue
                         open_set.put((self.cells[new_pos[0]][new_pos[1]].f, new_pos))
-
-    ############################################################
-    #### This is for the GUI part. No need to modify this unless
-    #### screen changes are needed.
-    ############################################################
-    ############################################################
+## A STAR ALGORITHM
     def run_astar(self, start, end):
         open_set = PriorityQueue()
 
@@ -336,8 +340,7 @@ class MazeGame:
 
 
         ############################################################
-        #### This is for the GUI part. No need to modify this unless
-        #### screen changes are needed.
+        #### GUI CONSTRUCTION
         ############################################################
 
     def reconstruct_path(self, end):
@@ -371,6 +374,8 @@ class MazeGame:
 
 
 def main():
+
+    ## Floor plan matrix 
     maze = [
         [0, 0, 0, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 14, 4, 4, 4, 4, 4, 4, 4, 4, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -433,7 +438,8 @@ def main():
         [0, 0, 14, 8, 8, 8, 8, 14, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 14, 4, 4, 4, 14, 12, 12, 14, 4, 4, 4, 4, 4, 14, 0, 0],
         [0, 0, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 0, 0],
     ]
-
+    
+## reading input file 
     def read_input_file(filename):
         algorithms = []
         start_locations = ()
@@ -498,7 +504,6 @@ def main():
 
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
-    #Read input file
             
     if len(sys.argv) != 2:
         print("Usage error")
@@ -511,7 +516,6 @@ def main():
     print(start_locations)
     print(delivery_locations)
 
-    # Example usage:
 
     # Create maze game instance
     root = tk.Tk()
